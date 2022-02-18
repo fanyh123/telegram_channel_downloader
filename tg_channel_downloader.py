@@ -77,6 +77,7 @@ def bytes_to_string(byte_count):
 
 async def worker(name):
     while True:
+        flag = False
         queue_item = await queue.get()
         message = queue_item[0]
         chat_title = queue_item[1]
@@ -84,7 +85,10 @@ async def worker(name):
         file_name = queue_item[3]
         for filter_file in filter_file_name:
             if file_name.endswith(filter_file):
-                return
+                flag = True
+                break
+        if flag:
+            continue
         dirname = validate_title(f'{chat_title}({entity.id})')
         datetime_dir_name = message.date.strftime("%Y年%m月")
         file_save_path = os.path.join(save_path, dirname, datetime_dir_name)
