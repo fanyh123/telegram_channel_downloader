@@ -99,9 +99,12 @@ async def worker(name):
             os.remove(os.path.join(file_save_path, file_name))
         print(f"{get_local_time()} 开始下载： {chat_title} - {file_name}")
         try:
+            print("1")
             loop = asyncio.get_event_loop()
+            print("2")
             task = loop.create_task(client.download_media(
                 message, os.path.join(file_save_path, file_name)))
+            print("3")
             await asyncio.wait_for(task, timeout=3600)
             if upload_file_set:
                 proc = await asyncio.create_subprocess_exec('fclone',
@@ -146,6 +149,7 @@ async def handler(update):
         return
     elif len(text) == 2:
         chat_id = text[1]
+        print(chat_id)
         offset_id = 0
         try:
             entity = await client.get_entity(chat_id)
